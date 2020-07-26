@@ -18,9 +18,12 @@ function newConnection(socket){
 	console.log('newConnection: ' + socket.id)
 
 	socket.on('mouse', mouseMsg);
-
 	function mouseMsg(data){
 		socket.broadcast.emit('mouse', data)
-		console.log(data)
+	}
+
+	socket.on('guess', guessMsg);
+	function guessMsg(data){
+		socket.broadcast.emit('guess', data)
 	}
 }
