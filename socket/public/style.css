@@ -1,0 +1,75 @@
+/*Credit to Mateusz Rybczonec from css-tricks.com */
+body {
+    font-family: sans-serif;
+    display: grid;
+    height: 100vh;
+    place-items: center;
+}
+
+/* Sets the container's height and width*/
+.base-timer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    height: 100px;
+    width: 100px;
+}
+
+.base-timer__svg {
+    transform: scaleX(-1);
+}
+
+/* Removes SVG styling that might have hidden the time label*/
+.base-timer__circle {
+    fill: none;
+    stroke: none;
+}
+
+/*The SVG path that displays the timer's progress*/
+.base-timer__path-elapsed {
+    stroke-width: 7px;
+    stroke: grey;
+}
+
+.base-timer__path-remaining {
+    /*as thick as orignal ring*/
+    stroke-width: 7px;
+    /*rounds the line endings for a seamless circle*/
+    stroke-linecap: round;
+    /*makes sure animation starts at top of circle*/
+    transform: rotate(90deg);
+    transform-origin: center;
+    /*one second aligns with the speed of the countdown*/
+    transition: 1s linear all;
+    fill-rule: nonzero;
+    /*allows ring to change color when color value updates*/
+    stroke: currentColor;
+}
+
+.base-timer__path-remaining.green {
+    color: rgb(65, 184, 131);
+}
+
+.base-timer__path-remaining.orange {
+    color: orange;
+}
+
+.base-timer__path-remaining.red {
+    color: red;
+}
+
+.base-timer__label {
+    position: absolute;
+    /*Size must match it's parent container */
+    width: 100px;
+    height: 10px;
+    /*Label eligned to top*/
+    top: 0;
+    /*Flexible box that centers content vertically and horizontally*/ 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*Adjust to our liking */
+    font-size: 48px;
+}
+/* end Credit to Mateusz Rybczonec from css-tricks.com */

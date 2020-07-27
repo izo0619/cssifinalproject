@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Pictionary</title>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script> -->
     <script src="/socket.io/socket.io.js"></script>
@@ -11,7 +12,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.1.4/lib/p5.min.js"></script>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.1.4/lib/addons/p5.sound.min.js"></script>
-    <script type="text/javascript" src="sketch.js"></script>
+
 
     <style>
       body {
@@ -20,5 +21,14 @@
     </style>
   </head>
   <body>
+    <h2>Begin!</h2>
+    <div id="canvas">
+      <script type="text/javascript" src="sketch.js"></script>
+    </div>
+    <!--Credit to Mateusz Rybczonec from css-tricks.com-->
+    <div id="Timer">
+      <script type="text/javascript" src="timer.js"></script>
+    </div>
+    <!--end Credit to Mateusz Rybczonec from css-tricks.com-->
   </body>
 </html>

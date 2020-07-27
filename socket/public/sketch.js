@@ -5,7 +5,9 @@ let guessY;
 let words;
 
 function setup(){
-  createCanvas(600,600);
+  var myCanvas = createCanvas(600, 600);
+    myCanvas.parent("canvas");
+  // createCanvas(600,600);
   // drawing
   socket.on('mouse', newDrawing)
   // colors
@@ -32,12 +34,12 @@ function setup(){
 
   socket.on('guess', newGuess)
 
-  // guess output
+  // initialize guess output
   guesses = createElement('h3', 'Guess History');
   guesses.position(400,50)
   guessY = 100
 
-  //words
+  //initialize words
   words = ['apple', 'banana', 'grapes', 'hat', 'sunset', 'daisy', 'camera', 'pie', 'pencil', 'line', 'sea', 'cupcake', 'plant']
   randomWord = random(words)
   assignWord = createElement('h2', randomWord)
@@ -45,8 +47,8 @@ function setup(){
 
 }
 
-function draw(){
-  
+function draw() {
+
 }
 
 // draw + send drawing data
