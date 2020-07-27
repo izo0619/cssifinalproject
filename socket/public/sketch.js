@@ -18,16 +18,21 @@ function setup(){
   brushSat = 80;
   brushBright = 80;
 
+  let parent = createDiv();
+  parent.id('guessContainer');
   // input
   input = createInput();
-  input.position(400, 550);
+  input.position(0, 550);
+  input.parent('guessContainer')
 
   button = createButton('guess');
   button.position(input.x + input.width, 550);
   button.mousePressed(greet);
+  button.parent('guessContainer')
 
   question = createElement('h3', 'what do you think this is?');
-  question.position(400, 500);
+  question.position(0, 500);
+  question.parent('guessContainer')
 
   textAlign(CENTER);
   textSize(32);
@@ -36,14 +41,16 @@ function setup(){
 
   // initialize guess output
   guesses = createElement('h3', 'Guess History');
-  guesses.position(400,50)
+  guesses.position(0,50)
+  guesses.parent('guessContainer')
   guessY = 100
 
   //initialize words
   words = ['apple', 'banana', 'grapes', 'hat', 'sunset', 'daisy', 'camera', 'pie', 'pencil', 'line', 'sea', 'cupcake', 'plant']
   randomWord = random(words)
   assignWord = createElement('h2', randomWord)
-  assignWord.position(400, 570)
+  assignWord.position(0, 570)
+  assignWord.parent('guessContainer')
 
 }
 
@@ -89,7 +96,8 @@ function chooseColors() {
  function greet() {
   const guess = input.value();
   newGuess = createP(guess)
-  newGuess.position(400,guessY)
+  newGuess.position(0,guessY)
+  newGuess.parent('guessContainer')
   guessY += 20
   input.value('');
 

@@ -73,3 +73,11 @@ body {
     font-size: 38px;
 }
 /* end Credit to Mateusz Rybczonec from css-tricks.com */
+
+#guessContainer {
+    position: absolute;
+    right: 80px;
+    bottom: 100px;
+    width: 250px;
+    height: 600px;
+}
