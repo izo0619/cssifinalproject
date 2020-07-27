@@ -62,7 +62,7 @@ body {
     position: absolute;
     /*Size must match it's parent container */
     width: 100px;
-    height: 10px;
+    height: 100px;
     /*Label eligned to top*/
     top: 0;
     /*Flexible box that centers content vertically and horizontally*/ 
@@ -70,6 +70,6 @@ body {
     align-items: center;
     justify-content: center;
     /*Adjust to our liking */
-    font-size: 48px;
+    font-size: 38px;
 }
 /* end Credit to Mateusz Rybczonec from css-tricks.com */
