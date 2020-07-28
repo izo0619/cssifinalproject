@@ -87,3 +87,11 @@ body {
     left: 100px;
     top: 150px;
 }
+
+.blueText {
+    color: #1926e3 /*royal blue-ish*/
+}
+
+.centeredText {
+    text-align: center;
+}

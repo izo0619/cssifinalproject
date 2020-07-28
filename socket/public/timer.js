@@ -126,7 +126,6 @@ function setCircleDasharray() {
 }
 
 function setRemainingPathColor(timeLeft) {
-    console.log(timeLeft)
     const { alert, warning, info } = COLOR_CODES;
 
     //if the remaining time is <= 5, remove warning class and apply alert class
@@ -147,7 +146,6 @@ function setRemainingPathColor(timeLeft) {
             .getElementById("base-timer-path-remaining")
             .classList.add(warning.color);
     } else if (timeLeft == 20){
-        console.log("here i am")
         document
             .getElementById("base-timer-path-remaining")
             .classList.remove(warning.color);
