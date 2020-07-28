@@ -58,6 +58,14 @@ function draw() {
 
 }
 
+
+//Canvas functionality:
+function keyPressed() {
+  if (keyCode === 32) { //space bar to clear canvas
+    clear();
+    background(90);
+  }
+}
 // draw + send drawing data
 function mouseDragged(){
   chooseColors();

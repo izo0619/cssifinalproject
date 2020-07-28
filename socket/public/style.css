@@ -81,3 +81,11 @@ body {
     width: 250px;
     height: 600px;
 }
+
+.blueText {
+    color: #1926e3 /*royal blue-ish*/
+}
+
+.centeredText {
+    text-align: center;
+}
