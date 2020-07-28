@@ -5,8 +5,7 @@ let guessY;
 let words;
 let drawerBtn, guesserBtn;
 let drawer, guesser;
-var timerStart;
-timerStart = false;
+let gameStart;
 
 function setup(){
   var myCanvas = createCanvas(600, 600);
@@ -59,25 +58,40 @@ function setup(){
   socket.on('chosenWord', newWord)
 
   //player checkboxes
+  gameStart = false;
   drawerBtn = select("#box1").elt;
   guesserBtn = select("#box2").elt;
 
   drawerBtn.onchange = function() {
-    if (drawerBtn.checked) {
+    if (drawerBtn.checked && !gameStart) {
+      player1 = new Player("drawer")
+      player2 = new Player("guesser")
+      socket.emit('playerRole', "drawer")
       guesserBtn.checked = false;
       console.log('drawerBtn')
+    } else if (drawerBtn.checked && gameStart){
+      guesserBtn.checked = false;
     }
+    gameStart = true;
+    drawerBtn.disabled = true;
+    guesserBtn.disabled = true;
   }
   guesserBtn.onchange = function() {
-    if (guesserBtn.checked) {
+    if (guesserBtn.checked && !gameStart) {
+      player1 = new Player("guesser")
+      player2 = new Player("drawer")
+      socket.emit('playerRole', "guesser")
       drawerBtn.checked = false;
       console.log('guesserBtn')
+    } else if (guesserBtn.checked && gameStart){
+      drawerBtn.checked = false;
     }
+    gameStart = true;
+    drawerBtn.disabled = true;
+    guesserBtn.disabled = true;
   }
+  socket.on('playerRole', setRole)
 
-  player1 = new Player("drawer")
-  player2 = new Player("guesser")
-  console.log(player1, player1)
 
 }
 
@@ -170,6 +184,18 @@ function newGuess(data){
 // syncs assigned word with word guesser has to guess
 function newWord(word){
   assignWord.html(word)
+}
+
+function setRole(role){
+  if (role == "drawer"){
+    guesserBtn.checked = true;
+    drawerBtn.disabled = true;
+    guesserBtn.disabled = true;
+  } else if (role == "guesser"){
+    drawerBtn.checked = true;
+    drawerBtn.disabled = true;
+    guesserBtn.disabled = true;
+  }
 }
 
 class Player{
