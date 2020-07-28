@@ -89,9 +89,19 @@ body {
 }
 
 .blueText {
-    color: #1926e3 /*royal blue-ish*/
+    color: #1926e3; /*royal blue-ish*/
 }
 
 .centeredText {
+    text-align: center;
+}
+
+/*Set the position and height and width of the SCORE container*/
+.score {
+    position: fixed;
+    left: 0;
+    height: 100px;
+    width: 100px;
+    color: #1926e3; /*royal blue-ish*/
     text-align: center;
 }
