@@ -26,4 +26,10 @@ function newConnection(socket){
 	function guessMsg(data){
 		socket.broadcast.emit('guess', data)
 	}
+
+	socket.on('chosenWord', wordMsg);
+	function wordMsg(data){
+		console.log(data)
+		socket.broadcast.emit('chosenWord', data)
+	}
 }
