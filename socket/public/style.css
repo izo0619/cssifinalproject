@@ -77,7 +77,13 @@ body {
 #guessContainer {
     position: absolute;
     right: 80px;
-    bottom: 100px;
+    top: 80px;
     width: 250px;
     height: 600px;
+}
+
+#player {
+    position: absolute;
+    left: 100px;
+    top: 150px;
 }

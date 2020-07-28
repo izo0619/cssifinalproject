@@ -58,13 +58,25 @@ document.getElementById("Timer").innerHTML = `
     </span>
   </div>
   `;
-startTimer();
+
+// if(timerStart){
+//     startTimer();
+// }
+
 
 function onTimesUp() {
     clearInterval(timerInterval);
+    player1.switchRole()
+    player2.switchRole()
+    console.log(player1, player2)
 }
 
 function startTimer() {
+    timePassed = 0;
+    timeLeft = TIME_LIMIT;
+    timerInterval = null;
+    remainingPathColor = COLOR_CODES.info.color;
+    setRemainingPathColor(timeLeft);
     timerInterval = setInterval(() => {
         //amount of time passed increments by one
         timePassed = timePassed += 1;
@@ -114,6 +126,7 @@ function setCircleDasharray() {
 }
 
 function setRemainingPathColor(timeLeft) {
+    console.log(timeLeft)
     const { alert, warning, info } = COLOR_CODES;
 
     //if the remaining time is <= 5, remove warning class and apply alert class
@@ -133,6 +146,17 @@ function setRemainingPathColor(timeLeft) {
         document
             .getElementById("base-timer-path-remaining")
             .classList.add(warning.color);
+    } else if (timeLeft == 20){
+        console.log("here i am")
+        document
+            .getElementById("base-timer-path-remaining")
+            .classList.remove(warning.color);
+        document
+            .getElementById("base-timer-path-remaining")
+            .classList.remove(alert.color);
+        document
+            .getElementById("base-timer-path-remaining")
+            .classList.add(info.color);
     }
 }
 
