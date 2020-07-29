@@ -48,4 +48,8 @@ function newConnection(socket){
 	function playerScore(data){
 		socket.broadcast.emit('playerScore', data)
 	}
+	socket.on('showWord', showWord);
+	function showWord(data){
+		socket.broadcast.emit('showWord', data)
+	}
 }

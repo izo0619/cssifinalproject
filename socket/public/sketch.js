@@ -97,6 +97,7 @@ function setup(){
   socket.on('playerRole', setRole)
   socket.on('player1', syncPlayers)
   socket.on('playerScore', updateOppScore)
+  socket.on('showWord', showWord)
 
 
 
@@ -118,13 +119,26 @@ function keyPressed() {
   }
 }
 
+function showWord(data){
+  if (data){
+    assignWord.show()
+  } else {
+    assignWord.hide()
+  }
+}
 
 
 //Disable or Enable features when starting
 function startGame() {
   if (playerChosen === true) {
     start = true
-    assignWord.show()
+    if (player.role == "guesser"){
+      assignWord.hide()
+      socket.emit("showWord", true)
+    } else {
+      assignWord.show()
+      socket.emit("showWord", false)
+    }
   } else {
     text("Please select a role: Drawer or Guesser.", width / 2, height / 2);
   }
@@ -251,6 +265,7 @@ function newRound(){
 }
 
 function syncPlayers(role){
+  playerChosen = true;
   if (role == "guesser"){
     player = new Player("drawer")
     guesserBtn.disabled = true;    
