@@ -5,7 +5,7 @@ let guessY;
 let words;
 let drawerBtn, guesserBtn;
 let drawer, guesser;
-let gameStart;
+let playerChosen, start;
 
 function setup(){
   var myCanvas = createCanvas(600, 600);
@@ -20,6 +20,9 @@ function setup(){
   brushHue = 0;
   brushSat = 80;
   brushBright = 80;
+
+  //intiialize some variables
+  start = false;
 
   let parent = createDiv();
   parent.id('guessContainer');
@@ -58,35 +61,35 @@ function setup(){
   socket.on('chosenWord', newWord)
 
   //player checkboxes
-  gameStart = false;
+  playerChosen = false;
   drawerBtn = select("#box1").elt;
   guesserBtn = select("#box2").elt;
 
   drawerBtn.onchange = function() {
-    if (drawerBtn.checked && !gameStart) {
+    if (drawerBtn.checked && !playerChosen) {
       player1 = new Player("drawer")
       player2 = new Player("guesser")
       socket.emit('playerRole', "drawer")
       guesserBtn.checked = false;
       console.log('drawerBtn')
-    } else if (drawerBtn.checked && gameStart){
+    } else if (drawerBtn.checked && playerChosen){
       guesserBtn.checked = false;
     }
-    gameStart = true;
+    playerChosen = true;
     drawerBtn.disabled = true;
     guesserBtn.disabled = true;
   }
   guesserBtn.onchange = function() {
-    if (guesserBtn.checked && !gameStart) {
+    if (guesserBtn.checked && !playerChosen) {
       player1 = new Player("guesser")
       player2 = new Player("drawer")
       socket.emit('playerRole', "guesser")
       drawerBtn.checked = false;
       console.log('guesserBtn')
-    } else if (guesserBtn.checked && gameStart){
+    } else if (guesserBtn.checked && playerChosen){
       drawerBtn.checked = false;
     }
-    gameStart = true;
+    playerChosen = true;
     drawerBtn.disabled = true;
     guesserBtn.disabled = true;
   }
@@ -107,10 +110,21 @@ function keyPressed() {
     background(90);
   }
 }
+
+//Disable or Enable features when starting
+function startGame() {
+  if (playerChosen === true) {
+    start = true
+  } else {
+    text("Please select a role: Drawer or Guesser.", width / 2, height / 2);
+  }
+}
 // draw + send drawing data
 function mouseDragged(){
-  chooseColors();
-  line(pmouseX, pmouseY, mouseX, mouseY)
+  if (start === true) {
+    chooseColors();
+    line(pmouseX, pmouseY, mouseX, mouseY)
+  }
 
 	let data = {
     px: pmouseX,
