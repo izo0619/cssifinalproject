@@ -15,7 +15,7 @@ var io = socket(server)
 io.sockets.on('connection', newConnection)
 
 function newConnection(socket){
-	// console.log('newConnection: ' + socket.id)
+	console.log('newConnection: ' + socket.id) //sorry I need to keep this in here for the time being so I know it's working LOL
 
 	socket.on('mouse', mouseMsg);
 	function mouseMsg(data){

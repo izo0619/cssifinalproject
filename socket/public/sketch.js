@@ -5,12 +5,11 @@ let guessY;
 let words;
 let drawerBtn, guesserBtn;
 let drawer, guesser;
-let gameStart;
+let playerChosen, start;
 
 function setup(){
   var myCanvas = createCanvas(600, 600);
   myCanvas.parent("canvas");
-
   // drawing
   socket.on('mouse', newDrawing)
   // colors
@@ -20,6 +19,9 @@ function setup(){
   brushHue = 0;
   brushSat = 80;
   brushBright = 80;
+
+  //intiialize some variables
+  start = false;
 
   let parent = createDiv();
   parent.id('guessContainer');
@@ -54,40 +56,41 @@ function setup(){
   assignWord = createElement('h2', randomWord)
   assignWord.position(0, 570)
   assignWord.parent('guessContainer')
+  assignWord.hide()
   socket.emit('chosenWord', randomWord)
   socket.on('chosenWord', newWord)
 
+
   //player checkboxes
-  gameStart = false;
+  playerChosen = false;
   drawerBtn = select("#box1").elt;
   guesserBtn = select("#box2").elt;
 
   drawerBtn.onchange = function() {
-    if (drawerBtn.checked && !gameStart) {
+    if (drawerBtn.checked && !playerChosen) {
       player = new Player("drawer")
       socket.emit('player1', "drawer")
       socket.emit('playerRole', "guesser")
       guesserBtn.checked = false;
       console.log('drawerBtn')
-    } else if (drawerBtn.checked && gameStart){
+    } else if (drawerBtn.checked && playerChosen){
       guesserBtn.checked = false;
     }
-    gameStart = true;
+    playerChosen = true;
     drawerBtn.disabled = true;
     guesserBtn.disabled = true;
   }
   guesserBtn.onchange = function() {
-    if (guesserBtn.checked && !gameStart) {
+    if (guesserBtn.checked && !playerChosen) {
       player = new Player("guesser")
       socket.emit('player1', "guesser")
       socket.emit('playerRole', "drawer")
-      
       drawerBtn.checked = false;
       console.log('guesserBtn')
-    } else if (guesserBtn.checked && gameStart){
+    } else if (guesserBtn.checked && playerChosen){
       drawerBtn.checked = false;
     }
-    gameStart = true;
+    playerChosen = true;
     drawerBtn.disabled = true;
     guesserBtn.disabled = true;
   }
@@ -114,10 +117,23 @@ function keyPressed() {
     background(90);
   }
 }
+
+
+
+//Disable or Enable features when starting
+function startGame() {
+  if (playerChosen === true) {
+    start = true
+    assignWord.show()
+  } else {
+    text("Please select a role: Drawer or Guesser.", width / 2, height / 2);
+  }
+}
 // draw + send drawing data
 function mouseDragged(){
-  chooseColors();
-  line(pmouseX, pmouseY, mouseX, mouseY)
+  if (start === true) {
+    chooseColors();
+    line(pmouseX, pmouseY, mouseX, mouseY)
 
 	let data = {
     px: pmouseX,
@@ -128,6 +144,7 @@ function mouseDragged(){
 
   socket.emit('mouse', data)
  }
+}
 
 // draw from sent data
 function newDrawing(data){
@@ -162,6 +179,7 @@ function chooseColors() {
       player.addScore()
       socket.emit('playerScore', player.score)
       updateScore(player.score)
+      newRound()
     }     
     guessIsCorrect = true;
     newGuess.style('color', '#32a852')
@@ -194,11 +212,13 @@ function newWord(word){
 
 function setRole(role){
   if (role == "guesser"){
+    assignWord.hide()
     guesserBtn.checked = true;
     drawerBtn.checked = false;
     drawerBtn.disabled = true;
     guesserBtn.disabled = true;
   } else if (role == "drawer"){
+    assignWord.show()
     drawerBtn.checked = true;
     guesserBtn.checked = false;
     drawerBtn.disabled = true;
@@ -206,10 +226,6 @@ function setRole(role){
   }
 }
 
-function setOppRole(role){
-  player.switchRole()
-  setRole(role)
-}
 
 function updateScore(score){
   let player1score = select("#player1").elt;
