@@ -33,7 +33,7 @@ const TIME_LIMIT = 20;
 let timePassed = 0;
 let timeLeft = TIME_LIMIT;
 let timerInterval = null;
-
+let timerEnd = false;
 
 document.getElementById("Timer").innerHTML = `
   <div class="base-timer">
@@ -64,14 +64,15 @@ document.getElementById("Timer").innerHTML = `
 // }
 
 
+socket.on('timeLeft', syncTimer)
+
 function onTimesUp() {
     clearInterval(timerInterval);
-    player1.switchRole()
-    player2.switchRole()
-    console.log(player1, player2)
+    timerEnd = true;
 }
 
 function startTimer() {
+    timerEnd=false;
     timePassed = 0;
     timeLeft = TIME_LIMIT;
     timerInterval = null;
@@ -81,7 +82,7 @@ function startTimer() {
         //amount of time passed increments by one
         timePassed = timePassed += 1;
         timeLeft = TIME_LIMIT - timePassed;
-
+        socket.emit('timeLeft', timeLeft)
         //time left label gets updated
         document.getElementById("base-timer-label").innerHTML = formatTime(timeLeft);
         
@@ -89,6 +90,7 @@ function startTimer() {
         setRemainingPathColor(timeLeft);
         if (timeLeft === 0) {
             onTimesUp();
+            return timerEnd;
         }
     }, 1000);
 }
@@ -158,6 +160,12 @@ function setRemainingPathColor(timeLeft) {
     }
 }
 
+function syncTimer(data){
+    setRemainingPathColor(data);
+    document.getElementById("base-timer-label").innerHTML = formatTime(data);
+    setCircleDasharray();
+    setRemainingPathColor(data);
+}
 //End Timer Work
 
 //end Credit: Mateusz Rybczonec

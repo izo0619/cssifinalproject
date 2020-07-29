@@ -9,8 +9,8 @@ let gameStart;
 
 function setup(){
   var myCanvas = createCanvas(600, 600);
-    myCanvas.parent("canvas");
-  // createCanvas(600,600);
+  myCanvas.parent("canvas");
+
   // drawing
   socket.on('mouse', newDrawing)
   // colors
@@ -64,9 +64,9 @@ function setup(){
 
   drawerBtn.onchange = function() {
     if (drawerBtn.checked && !gameStart) {
-      player1 = new Player("drawer")
-      player2 = new Player("guesser")
-      socket.emit('playerRole', "drawer")
+      player = new Player("drawer")
+      socket.emit('player1', "drawer")
+      socket.emit('playerRole', "guesser")
       guesserBtn.checked = false;
       console.log('drawerBtn')
     } else if (drawerBtn.checked && gameStart){
@@ -78,9 +78,10 @@ function setup(){
   }
   guesserBtn.onchange = function() {
     if (guesserBtn.checked && !gameStart) {
-      player1 = new Player("guesser")
-      player2 = new Player("drawer")
-      socket.emit('playerRole', "guesser")
+      player = new Player("guesser")
+      socket.emit('player1', "guesser")
+      socket.emit('playerRole', "drawer")
+      
       drawerBtn.checked = false;
       console.log('guesserBtn')
     } else if (guesserBtn.checked && gameStart){
@@ -91,12 +92,18 @@ function setup(){
     guesserBtn.disabled = true;
   }
   socket.on('playerRole', setRole)
+  socket.on('player1', syncPlayers)
+  socket.on('playerScore', updateOppScore)
+
 
 
 }
 
 function draw() {
-  
+  if(timerEnd){
+    newRound();
+    // noLoop();
+  }
 }
 
 
@@ -150,14 +157,12 @@ function chooseColors() {
   guessY += 20
   input.value('');
 
-  if (guess == randomWord && guesserBtn.checked){
-    if (player1.role == "guesser"){
-      player1.addScore()
-    } else if (player2.role == "guesser"){
-      player2.addScore()
-    }
-    console.log(player1, player2)
-    // hi eileen plz do something here to display score
+  if (guess == randomWord){
+    if (player.role == "guesser"){
+      player.addScore()
+      socket.emit('playerScore', player.score)
+      updateScore(player.score)
+    }     
     guessIsCorrect = true;
     newGuess.style('color', '#32a852')
   } else {
@@ -165,7 +170,6 @@ function chooseColors() {
     guessIsCorrect = false;
     newGuess.style('color', '#a83232')
   }
-
   let guessData = {
     guess: guess,
     isCorrect: guessIsCorrect,
@@ -177,24 +181,65 @@ function chooseColors() {
 function newGuess(data){
   guess = data.guess;
   newGuess = createP(guess)
-  newGuess.position(400,guessY)
+  newGuess.position(0,guessY)
+  newGuess.parent('guessContainer')
   guessY += 20
 }
 
 // syncs assigned word with word guesser has to guess
 function newWord(word){
+  randomWord = word
   assignWord.html(word)
 }
 
 function setRole(role){
-  if (role == "drawer"){
+  if (role == "guesser"){
     guesserBtn.checked = true;
+    drawerBtn.checked = false;
     drawerBtn.disabled = true;
     guesserBtn.disabled = true;
-  } else if (role == "guesser"){
+  } else if (role == "drawer"){
     drawerBtn.checked = true;
+    guesserBtn.checked = false;
     drawerBtn.disabled = true;
     guesserBtn.disabled = true;
+  }
+}
+
+function setOppRole(role){
+  player.switchRole()
+  setRole(role)
+}
+
+function updateScore(score){
+  let player1score = select("#player1").elt;
+  player1score.innerHTML = "Your Score: " + score
+}
+
+function updateOppScore(score){
+  player2score = select("#player2").elt
+  player2score.innerHTML = "Opponent's Score: " + score
+}
+
+function newRound(){
+  socket.emit('playerRole', player.role)
+  player.switchRole()
+  setRole(player.role)
+  startTimer()
+  let index = words.indexOf(randomWord);
+  words.splice(index, 1);
+  randomWord = random(words)
+  assignWord.html(randomWord);
+  socket.emit('chosenWord', randomWord)
+  socket.on('chosenWord', newWord)
+}
+
+function syncPlayers(role){
+  if (role == "guesser"){
+    player = new Player("drawer")
+    guesserBtn.disabled = true;    
+  } else if (role == "drawer"){
+    player = new Player("guesser")
   }
 }
 

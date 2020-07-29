@@ -34,7 +34,18 @@ function newConnection(socket){
 
 	socket.on('playerRole', role);
 	function role(data){
-		console.log(data)
 		socket.broadcast.emit('playerRole', data)
+	}
+	socket.on('timeLeft', syncTimer);
+	function syncTimer(data){
+		socket.broadcast.emit('timeLeft', data)
+	}
+	socket.on('player1', initPlayers);
+	function initPlayers(data){
+		socket.broadcast.emit('player1', data)
+	}
+	socket.on('playerScore', playerScore);
+	function playerScore(data){
+		socket.broadcast.emit('playerScore', data)
 	}
 }

@@ -27,6 +27,9 @@
         <p>SPACE BAR: clear canvas</p>
     </div>
     <div id="canvas">
+      <div id="Timer">
+      <script type="text/javascript" src="timer.js"></script>
+    </div>
       <script type="text/javascript" src="sketch.js"></script>
       <div id="player">
         <label><input type="checkbox" id="box1" name="Drawer" value="Drawer">Drawer</label>
@@ -37,13 +40,11 @@
       </div>
     </div>
     <div id="score" class="score blueText centeredText">
-      <p>Player 1 Score = 5</p> 
-      <p>Player 2 Score = 5</p> 
+      <p id="player1">Your Score = 0</p> 
+      <p id="player2">Opponent's Score = 0</p> 
     </div>
     <!--Credit to Mateusz Rybczonec from css-tricks.com-->
-    <div id="Timer">
-      <script type="text/javascript" src="timer.js"></script>
-    </div>
+    
 
    
     <!--end Credit to Mateusz Rybczonec from css-tricks.com-->
