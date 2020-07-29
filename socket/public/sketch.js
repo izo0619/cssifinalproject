@@ -10,7 +10,6 @@ let playerChosen, start;
 function setup(){
   var myCanvas = createCanvas(600, 600);
     myCanvas.parent("canvas");
-  // createCanvas(600,600);
   // drawing
   socket.on('mouse', newDrawing)
   // colors
@@ -111,6 +110,8 @@ function keyPressed() {
   }
 }
 
+
+
 //Disable or Enable features when starting
 function startGame() {
   if (playerChosen === true) {
@@ -124,7 +125,6 @@ function mouseDragged(){
   if (start === true) {
     chooseColors();
     line(pmouseX, pmouseY, mouseX, mouseY)
-  }
 
 	let data = {
     px: pmouseX,
@@ -135,6 +135,7 @@ function mouseDragged(){
 
   socket.emit('mouse', data)
  }
+}
 
 // draw from sent data
 function newDrawing(data){
