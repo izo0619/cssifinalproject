@@ -72,6 +72,7 @@ function onTimesUp() {
 }
 
 function startTimer() {
+    clearInterval(timerInterval);
     timerEnd=false;
     timePassed = 0;
     timeLeft = TIME_LIMIT;

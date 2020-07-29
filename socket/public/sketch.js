@@ -68,7 +68,7 @@ function setup(){
 
   drawerBtn.onchange = function() {
     if (drawerBtn.checked && !playerChosen) {
-      player = new Player("drawer")
+      player = new Player("drawer", false)
       socket.emit('player1', "drawer")
       socket.emit('playerRole', "guesser")
       guesserBtn.checked = false;
@@ -82,7 +82,7 @@ function setup(){
   }
   guesserBtn.onchange = function() {
     if (guesserBtn.checked && !playerChosen) {
-      player = new Player("guesser")
+      player = new Player("guesser", false)
       socket.emit('player1', "guesser")
       socket.emit('playerRole', "drawer")
       drawerBtn.checked = false;
@@ -98,8 +98,8 @@ function setup(){
   socket.on('player1', syncPlayers)
   socket.on('playerScore', updateOppScore)
   socket.on('showWord', showWord)
-
-
+  socket.on('restartTimer', restartTimer)
+  console.log(player)
 
 }
 
@@ -110,6 +110,18 @@ function draw() {
   }
 }
 
+function restartTimer(data){
+  if (data){
+    console.log(player.timeKeeper)
+    if (player.timeKeeper == true){
+       startTimer()
+    } else {
+      socket.emit("restartTimer", true)
+    }
+  } 
+
+  
+}
 
 //Canvas functionality:
 function keyPressed() {
@@ -132,6 +144,7 @@ function showWord(data){
 function startGame() {
   if (playerChosen === true) {
     start = true
+    player.timeKeeper = true;
     if (player.role == "guesser"){
       assignWord.hide()
       socket.emit("showWord", true)
@@ -255,29 +268,36 @@ function newRound(){
   socket.emit('playerRole', player.role)
   player.switchRole()
   setRole(player.role)
-  startTimer()
   let index = words.indexOf(randomWord);
   words.splice(index, 1);
   randomWord = random(words)
   assignWord.html(randomWord);
   socket.emit('chosenWord', randomWord)
   socket.on('chosenWord', newWord)
+  restartTimer(true)
+
+  // if (player.timeKeeper == true){
+  //   restartTimer(true)
+  // } else {
+  //   socket.emit("clearInterval", true)
+  // }
 }
 
 function syncPlayers(role){
   playerChosen = true;
   if (role == "guesser"){
-    player = new Player("drawer")
+    player = new Player("drawer", false)
     guesserBtn.disabled = true;    
   } else if (role == "drawer"){
-    player = new Player("guesser")
+    player = new Player("guesser", false)
   }
 }
 
 class Player{
-  constructor(role){
+  constructor(role, timeKeeper){
     this.role = role;
     this.score = 0;
+    this.timeKeeper = timeKeeper;
   }
 
   addScore(){
