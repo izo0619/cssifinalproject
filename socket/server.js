@@ -52,4 +52,9 @@ function newConnection(socket){
 	function showWord(data){
 		socket.broadcast.emit('showWord', data)
 	}
+	socket.on("restartTimer", restartTimer);
+	function restartTimer(data){
+		console.log(data)
+		socket.broadcast.emit('restartTimer', data)
+	}
 }
