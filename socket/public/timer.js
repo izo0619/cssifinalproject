@@ -72,7 +72,6 @@ function onTimesUp() {
 }
 
 function startTimer() {
-    clearInterval(timerInterval);
     timerEnd=false;
     timePassed = 0;
     timeLeft = TIME_LIMIT;
@@ -165,7 +164,7 @@ function syncTimer(data){
     setRemainingPathColor(data);
     document.getElementById("base-timer-label").innerHTML = formatTime(data);
     setCircleDasharray();
-    // setRemainingPathColor(data);
+    setRemainingPathColor(data);
 }
 //End Timer Work
 
