@@ -54,7 +54,12 @@ function newConnection(socket){
 	}
 	socket.on("restartTimer", restartTimer);
 	function restartTimer(data){
-		console.log(data)
 		socket.broadcast.emit('restartTimer', data)
+	}
+	
+	socket.on("eraseScreen", eraseScreen);
+	function eraseScreen(data){
+		console.log(data)
+		socket.broadcast.emit('eraseScreen', data)
 	}
 }
