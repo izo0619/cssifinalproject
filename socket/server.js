@@ -37,8 +37,8 @@ function newConnection(socket){
 		socket.broadcast.emit('playerRole', data)
 	}
 	socket.on('timeLeft', syncTimer);
-	function syncTimer(data){
-		socket.broadcast.emit('timeLeft', data)
+	function syncTimer(timeLeft){
+		socket.broadcast.emit('timeLeft', timeLeft)
 	}
 	socket.on('player1', initPlayers);
 	function initPlayers(data){

@@ -99,7 +99,7 @@ function setup(){
   socket.on('playerScore', updateOppScore)
   socket.on('showWord', showWord)
   socket.on('restartTimer', restartTimer)
-  socket.on("eraseScreen", eraseScreen)
+  console.log(player)
 
 }
 
@@ -111,7 +111,6 @@ function draw() {
 }
 
 function restartTimer(data){
-  console.log('timer restarted')
   if (data){
     console.log(player.timeKeeper)
     if (player.timeKeeper == true){
@@ -129,13 +128,7 @@ function keyPressed() {
   if (keyCode === 32) { //space bar to clear canvas
     clear();
     background(90);
-    socket.emit("eraseScreen", true)
   }
-}
-
-function eraseScreen(){
-  clear();
-  background(90);
 }
 
 function showWord(data){
@@ -246,14 +239,12 @@ function newWord(word){
 
 function setRole(role){
   if (role == "guesser"){
-    player.role = role
     assignWord.hide()
     guesserBtn.checked = true;
     drawerBtn.checked = false;
     drawerBtn.disabled = true;
     guesserBtn.disabled = true;
   } else if (role == "drawer"){
-    player.role = role;
     assignWord.show()
     drawerBtn.checked = true;
     guesserBtn.checked = false;
@@ -275,7 +266,6 @@ function updateOppScore(score){
 
 function newRound(){
   socket.emit('playerRole', player.role)
-  console.log(player.role)
   player.switchRole()
   setRole(player.role)
   let index = words.indexOf(randomWord);
@@ -284,7 +274,6 @@ function newRound(){
   assignWord.html(randomWord);
   socket.emit('chosenWord', randomWord)
   socket.on('chosenWord', newWord)
-  console.log(player.timerKeeper + " restarting timer")
   restartTimer(true)
 
   // if (player.timeKeeper == true){
