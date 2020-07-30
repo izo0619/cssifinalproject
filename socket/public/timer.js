@@ -69,7 +69,7 @@ socket.on('timeLeft', syncTimer)
 function onTimesUp() {
     clearInterval(timerInterval);
     timerEnd = true;
-    console.log("Times Up Function");
+    // console.log("Times Up Function");
 }
 
 function startTimer() {
@@ -84,7 +84,7 @@ function startTimer() {
         timePassed = timePassed += 1;
         timeLeft = TIME_LIMIT - timePassed;
         socket.emit('timeLeft', timeLeft)
-        console.log(timeLeft);
+        // console.log(timeLeft);
         //time left label gets updated
         document.getElementById("base-timer-label").innerHTML = formatTime(timeLeft);
         
@@ -95,7 +95,7 @@ function startTimer() {
             return timerEnd;
         }
     }, 1000);
-    console.log("started Timer")
+    // console.log("started Timer")
 }
 
 function formatTime(timeLeft) {
@@ -117,7 +117,7 @@ function formatTime(timeLeft) {
 //Divides the time left by the defined time limit
 function calculateTimeFraction(timeLeft) {
     const rawTimeFraction = timeLeft / TIME_LIMIT;
-    console.log("raw time fraction: " + rawTimeFraction);
+    // console.log("raw time fraction: " + rawTimeFraction);
     return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
 }
 
@@ -126,7 +126,7 @@ function setCircleDasharray(timeLeft) {
     const circleDasharray = `${(
         calculateTimeFraction(timeLeft) * FULL_DASH_ARRAY
     ).toFixed(0)} 283`;
-    console.log("circleDasharray: " + circleDasharray);
+    // console.log("circleDasharray: " + circleDasharray);
     document
         .getElementById("base-timer-path-remaining")
         .setAttribute("stroke-dasharray", circleDasharray);
@@ -170,7 +170,7 @@ function syncTimer(timeLeft){
     document.getElementById("base-timer-label").innerHTML = formatTime(timeLeft);
     setCircleDasharray(timeLeft);
     setRemainingPathColor(timeLeft);
-    console.log("Time Left: " + timeLeft)
+    // console.log("Time Left: " + timeLeft)
     if (timeLeft === 0) {
         onTimesUp();
         timerEnd=false;
@@ -183,7 +183,7 @@ function syncTimer(timeLeft){
             //amount of time passed increments by one
             timePassed = timePassed += 1;
             timeLeft = TIME_LIMIT - timePassed;
-        console.log("started Timer here too")
+        // console.log("started Timer here too")
         }, 1000);
     }
 }

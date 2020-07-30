@@ -6,6 +6,7 @@ let words;
 let drawerBtn, guesserBtn;
 let drawer, guesser;
 let playerChosen, start;
+let yourScore, oppScore; 
 
 function setup(){
   var myCanvas = createCanvas(600, 600);
@@ -22,6 +23,8 @@ function setup(){
 
   //intiialize some variables
   start = false;
+  yourScore = 0;
+  oppScore = 0;
 
   let parent = createDiv();
   parent.id('guessContainer');
@@ -72,7 +75,6 @@ function setup(){
       socket.emit('player1', "drawer")
       socket.emit('playerRole', "guesser")
       guesserBtn.checked = false;
-      console.log('drawerBtn')
     } else if (drawerBtn.checked && playerChosen){
       guesserBtn.checked = false;
     }
@@ -86,7 +88,6 @@ function setup(){
       socket.emit('player1', "guesser")
       socket.emit('playerRole', "drawer")
       drawerBtn.checked = false;
-      console.log('guesserBtn')
     } else if (guesserBtn.checked && playerChosen){
       drawerBtn.checked = false;
     }
@@ -100,19 +101,32 @@ function setup(){
   socket.on('showWord', showWord)
   socket.on('restartTimer', restartTimer)
   socket.on("eraseScreen", eraseScreen)
+  socket.on('words', syncWords)
 
 }
 
 function draw() {
   if(timerEnd){
     newRound();
-    // noLoop();
+  }
+  if (words.length == 0){
+    onTimesUp()
+    assignWord.hide()
+    if (yourScore == oppScore){
+      text("Tie!", width / 2, height / 2);
+    } else if (yourScore > oppScore){
+      text("You Win!", width / 2, height / 2);
+    } else {
+       text("You Lose!", width / 2, height / 2);
+    }
+    noLoop()
   }
 }
 
+
+
 function restartTimer(data){
   if (data){
-    console.log(player.timeKeeper)
     if (player.timeKeeper == true){
       onTimesUp()
        startTimer()
@@ -124,7 +138,7 @@ function restartTimer(data){
 
 //Canvas functionality:
 function keyPressed() {
-  if (keyCode === 32) { //space bar to clear canvas   if (keyCode === 32) { //space bar to clear canvas
+  if (keyCode === 32) { //space bar to clear canvas 
     clear();
     background(90);
     socket.emit("eraseScreen", true)  
@@ -145,6 +159,9 @@ function showWord(data){
   }
 }
 
+function syncWords(data){
+  words = data
+}
 
 //Disable or Enable features when starting
 function startGame() {
@@ -262,11 +279,13 @@ function setRole(role){
 
 
 function updateScore(score){
+  yourScore = score
   let player1score = select("#player1").elt;
   player1score.innerHTML = "Your Score: " + score
 }
 
 function updateOppScore(score){
+  oppScore = score
   player2score = select("#player2").elt
   player2score.innerHTML = "Opponent's Score: " + score
 }
@@ -282,12 +301,8 @@ function newRound(){
   socket.emit('chosenWord', randomWord)
   socket.on('chosenWord', newWord)
   restartTimer(true)
+  socket.emit('words', words)
 
-  // if (player.timeKeeper == true){
-  //   restartTimer(true)
-  // } else {
-  //   socket.emit("clearInterval", true)
-  // }
 }
 
 function syncPlayers(role){

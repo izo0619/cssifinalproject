@@ -69,4 +69,8 @@ function newConnection(socket){
 		console.log(data)
 		socket.broadcast.emit('eraseScreen', data)
 	}
+	socket.on("words", syncWords);
+	function syncWords(data){
+		socket.broadcast.emit('words', data)
+	}
 }
