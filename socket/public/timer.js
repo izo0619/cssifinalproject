@@ -69,6 +69,7 @@ socket.on('timeLeft', syncTimer)
 function onTimesUp() {
     clearInterval(timerInterval);
     timerEnd = true;
+    console.log("Times Up Function");
 }
 
 function startTimer() {
@@ -83,24 +84,26 @@ function startTimer() {
         timePassed = timePassed += 1;
         timeLeft = TIME_LIMIT - timePassed;
         socket.emit('timeLeft', timeLeft)
+        console.log(timeLeft);
         //time left label gets updated
         document.getElementById("base-timer-label").innerHTML = formatTime(timeLeft);
         
-        setCircleDasharray();
+        setCircleDasharray(timeLeft);
         setRemainingPathColor(timeLeft);
         if (timeLeft === 0) {
             onTimesUp();
             return timerEnd;
         }
     }, 1000);
+    console.log("started Timer")
 }
 
-function formatTime(time) {
+function formatTime(timeLeft) {
     //The largest round integer less than or equal to the result of time being divided by 60. 
-    const minutes = Math.floor(time / 60);
+    const minutes = Math.floor(timeLeft / 60);
 
     //Seconds are the remainder of the time divided by 60 (modulus operator)
-    let seconds = time % 60;
+    let seconds = timeLeft % 60;
 
     //If the value of seconds if < 10, then we display seconds with a leading zero
     if (seconds < 10) {
@@ -112,16 +115,18 @@ function formatTime(time) {
     }
 
 //Divides the time left by the defined time limit
-function calculateTimeFraction() {
+function calculateTimeFraction(timeLeft) {
     const rawTimeFraction = timeLeft / TIME_LIMIT;
+    console.log("raw time fraction: " + rawTimeFraction);
     return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
 }
 
 //update the dasharray value as time passes, starting with 283
-function setCircleDasharray() {
+function setCircleDasharray(timeLeft) {
     const circleDasharray = `${(
-        calculateTimeFraction() * FULL_DASH_ARRAY
+        calculateTimeFraction(timeLeft) * FULL_DASH_ARRAY
     ).toFixed(0)} 283`;
+    console.log("circleDasharray: " + circleDasharray);
     document
         .getElementById("base-timer-path-remaining")
         .setAttribute("stroke-dasharray", circleDasharray);
@@ -160,11 +165,27 @@ function setRemainingPathColor(timeLeft) {
     }
 }
 
-function syncTimer(data){
-    setRemainingPathColor(data);
-    document.getElementById("base-timer-label").innerHTML = formatTime(data);
-    setCircleDasharray();
-    setRemainingPathColor(data);
+function syncTimer(timeLeft){
+    setRemainingPathColor(timeLeft);
+    document.getElementById("base-timer-label").innerHTML = formatTime(timeLeft);
+    setCircleDasharray(timeLeft);
+    setRemainingPathColor(timeLeft);
+    console.log("Time Left: " + timeLeft)
+    if (timeLeft === 0) {
+        onTimesUp();
+        timerEnd=false;
+        timePassed = 0;
+        timeLeft = TIME_LIMIT;
+        timerInterval = null;
+        remainingPathColor = COLOR_CODES.info.color;
+        setRemainingPathColor(timeLeft);
+        timerInterval = setInterval(() => {
+            //amount of time passed increments by one
+            timePassed = timePassed += 1;
+            timeLeft = TIME_LIMIT - timePassed;
+        console.log("started Timer here too")
+        }, 1000);
+    }
 }
 //End Timer Work
 
