@@ -99,7 +99,7 @@ function setup(){
   socket.on('playerScore', updateOppScore)
   socket.on('showWord', showWord)
   socket.on('restartTimer', restartTimer)
-  console.log(player)
+  socket.on("eraseScreen", eraseScreen)
 
 }
 
@@ -118,17 +118,22 @@ function restartTimer(data){
     } else {
       socket.emit("restartTimer", true)
     }
-  } 
-
-  
+  }   
 }
 
 //Canvas functionality:
 function keyPressed() {
-  if (keyCode === 32) { //space bar to clear canvas
+  if (keyCode === 32) { //space bar to clear canvas   if (keyCode === 32) { //space bar to clear canvas
     clear();
     background(90);
+    socket.emit("eraseScreen", true)  
   }
+}
+
+
+function eraseScreen(){ 
+  clear();  
+  background(90); 
 }
 
 function showWord(data){
@@ -238,6 +243,7 @@ function newWord(word){
 }
 
 function setRole(role){
+  player.role = role
   if (role == "guesser"){
     assignWord.hide()
     guesserBtn.checked = true;

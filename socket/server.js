@@ -2,7 +2,7 @@
 var express = require('express');
 
 var app = express();
-var server = app.listen(3000)
+const server = app.listen(process.env.PORT || 3000);
 
 app.use(express.static('public'))
 
@@ -11,6 +11,13 @@ console.log('my socket server is running')
 var socket = require('socket.io');
 
 var io = socket(server)
+// Make sure our scripts and styles can be seen.
+app.use(express.static("public"));
+
+// The "webapp" portion just delivers the main page.
+app.get("/", (request, response) => {
+  response.sendFile(__dirname + "/views/index.html");
+});
 
 io.sockets.on('connection', newConnection)
 
