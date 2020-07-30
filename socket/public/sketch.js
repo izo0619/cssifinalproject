@@ -114,6 +114,7 @@ function restartTimer(data){
   if (data){
     console.log(player.timeKeeper)
     if (player.timeKeeper == true){
+      onTimesUp()
        startTimer()
     } else {
       socket.emit("restartTimer", true)
