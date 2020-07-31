@@ -159,16 +159,19 @@ button {
   position: fixed;
   top: var(--distanceFromTop);
   left: 100px;
-  height: 100px;
+  height: 50px;
   width: 200px;
   color: #4a4e4d; /*royal blue-ish*/
   text-align: left;
+  background-color: rgb(255, 139, 110, 0.8);
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .score p {
   margin-left: 0px;
-  marigin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 10px;
 }
 
 #rulesandcontrols h3, p {

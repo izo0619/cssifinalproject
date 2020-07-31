@@ -147,6 +147,8 @@ function keyPressed() {
     clear();
     background(90);
     socket.emit("eraseScreen", true)  
+  } else if (keyCode === 13){
+    greet()
   }
 }
 
