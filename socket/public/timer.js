@@ -152,7 +152,7 @@ function setRemainingPathColor(timeLeft) {
         document
             .getElementById("base-timer-path-remaining")
             .classList.add(warning.color);
-    } else if (timeLeft == 20){
+    } else if (timeLeft > warning.threshold){
         document
             .getElementById("base-timer-path-remaining")
             .classList.remove(warning.color);

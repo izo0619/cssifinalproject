@@ -1,16 +1,50 @@
 /*Credit to Mateusz Rybczonec from css-tricks.com */
+
+/*Color Palette hex codes:
+#4a4e4d (dark gray) • #12b5c4 (tealish blue)• #47c4cc (lighter tealish blue) • #ffd25c (yellow)• #ff8b6e (peach-ish)*/ 
+
+:root {
+  --distanceFromTop: 20vh;
+}
+
 body {
-    font-family: sans-serif;
+    font-family: 'Montserrat', sans-serif;
     display: grid;
     height: 100vh;
     place-items: center;
+    color: #4a4e4d;
+    background-color: #bdd9db; 
 }
+
+button {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #ff8b6e;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 70px;
+  height: 20px;
+  padding: 0px 0px 0px 0px;
+  font-weight: bold;
+}
+
+/*Canvas CSS settings*/
+.p5Canvas {
+  
+}
+
 
 /* Sets the container's height and width*/
 .base-timer {
     position: fixed;
-    bottom: 0;
-    right: 0;
+    top: 600px;
+    left: 100px;
     height: 100px;
     width: 100px;
 }
@@ -75,21 +109,45 @@ body {
 /* end Credit to Mateusz Rybczonec from css-tricks.com */
 
 #guessContainer {
-    position: absolute;
-    right: 80px;
-    top: 80px;
-    width: 250px;
-    height: 600px;
+    position: fixed;
+    right: 50px;
+    top: 100px;
+    width: 260px;
+    height: 500px;
+    background-color: rgb(255, 209, 92, 0.8);
+    text-align: center;
+    border-radius: 10px;
+}
+
+#guessContainer h3, h2, button, p{
+  margin-left: 20px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+#guessContainer input {
+  margin-left: 20px;
+  positon: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+#guessContainer h3 {
+  margin-top: 0px;
+}
+
+#guessContainer button {
+  margin-top: 0px;
+  border-radius: 1px;
 }
 
 #player {
-    position: absolute;
+    position: fixed;
     left: 100px;
-    top: 150px;
+    top: 350px;
 }
 
-.blueText {
-    color: #1926e3; /*royal blue-ish*/
+.grayText {
+    color: #4a4e4d; /*royal blue-ish*/
 }
 
 .centeredText {
@@ -98,10 +156,35 @@ body {
 
 /*Set the position and height and width of the SCORE container*/
 .score {
-    position: fixed;
-    left: 0;
-    height: 100px;
-    width: 100px;
-    color: #1926e3; /*royal blue-ish*/
-    text-align: center;
+  position: fixed;
+  top: var(--distanceFromTop);
+  left: 100px;
+  height: 100px;
+  width: 200px;
+  color: #4a4e4d; /*royal blue-ish*/
+  text-align: left;
+}
+
+.score p {
+  margin-left: 0px;
+  marigin-top: 0px;
+  margin-bottom: 0px;
+}
+
+#rulesandcontrols h3, p {
+  margin: 0px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+#rulesandcontrols {
+  position: fixed;
+  left: 100px;
+  top: 500px;
+  width: 100px;
+}
+
+/* dont move this from the bottom it is being stupid*/
+#guessContainer p {
+  margin-left: 20px;
 }

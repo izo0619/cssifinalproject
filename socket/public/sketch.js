@@ -1,6 +1,6 @@
 // let socket;
 let brushHue, brushSat, brushBright;
-let input, button, question, guesses;
+let input, button, question, guesses, guessBox;
 let guessY;
 let words;
 let drawerBtn, guesserBtn;
@@ -30,34 +30,39 @@ function setup(){
   parent.id('guessContainer');
   // input
   input = createInput();
-  input.position(0, 550);
+  input.position(0, 450);
   input.parent('guessContainer')
 
-  button = createButton('guess');
-  button.position(input.x + input.width, 550);
+  button = createButton('Guess');
+  button.position(input.x + input.width, 450);
   button.mousePressed(greet);
   button.parent('guessContainer')
 
-  question = createElement('h3', 'what do you think this is?');
-  question.position(0, 500);
+  question = createElement('h3', 'What is this?');
+  question.position(0, 400);
   question.parent('guessContainer')
 
   textAlign(CENTER);
   textSize(32);
 
   socket.on('guess', newGuess)
+  
+  // div to hold guesses
+  guessBox = createDiv()
+  guessBox.parent('guessContainer')
+  guessBox.id('guessBox')
 
   // initialize guess output
   guesses = createElement('h3', 'Guess History');
-  guesses.position(0,50)
+  guesses.position(0,30)
   guesses.parent('guessContainer')
-  guessY = 100
+  guessY = 60
 
   //initialize words
   words = ['apple', 'banana', 'grapes', 'hat', 'sunset', 'daisy', 'camera', 'pie', 'pencil', 'line', 'sea', 'cupcake', 'plant']
   randomWord = random(words)
   assignWord = createElement('h2', randomWord)
-  assignWord.position(0, 570)
+  assignWord.position(0, 500)
   assignWord.parent('guessContainer')
   assignWord.hide()
   socket.emit('chosenWord', randomWord)
@@ -128,7 +133,7 @@ function draw() {
 function restartTimer(data){
   if (data){
     if (player.timeKeeper == true){
-      onTimesUp()
+        onTimesUp()
        startTimer()
     } else {
       socket.emit("restartTimer", true)
@@ -152,6 +157,7 @@ function eraseScreen(){
 }
 
 function showWord(data){
+  start = true;
   if (data){
     assignWord.show()
   } else {
@@ -175,8 +181,9 @@ function startGame() {
       assignWord.show()
       socket.emit("showWord", false)
     }
+    startTimer();
   } else {
-    text("Please select a role: Drawer or Guesser.", width / 2, height / 2);
+    alert("Please select a role: Drawer or Guesser.", width / 2, height / 2);
   }
 }
 // draw + send drawing data
@@ -185,12 +192,12 @@ function mouseDragged(){
     chooseColors();
     line(pmouseX, pmouseY, mouseX, mouseY)
 
-	let data = {
+  let data = {
     px: pmouseX,
     py: pmouseY,
-		x: mouseX,
-		y: mouseY
-	}
+    x: mouseX,
+    y: mouseY
+  }
 
   socket.emit('mouse', data)
  }
@@ -200,7 +207,7 @@ function mouseDragged(){
 function newDrawing(data){
   stroke(0, 0, 0);
   fill(0, 0, 0);
- 	line(data.px, data.py, data.x, data.y)
+  line(data.px, data.py, data.x, data.y)
  }
 
 
@@ -302,7 +309,9 @@ function newRound(){
   socket.on('chosenWord', newWord)
   restartTimer(true)
   socket.emit('words', words)
-
+  clear();  
+  background(90); 
+  socket.emit("eraseScreen", true)  
 }
 
 function syncPlayers(role){
