@@ -59,7 +59,7 @@ function setup(){
   guessY = 60
 
   //initialize words
-  words = ['apple', 'banana', 'grapes', 'hat', 'sunset', 'daisy', 'camera', 'pie', 'pencil', 'line', 'sea', 'cupcake', 'plant']
+  words = ['apple', 'banana', 'grapes', 'hat', 'sunset', 'daisy', 'camera', 'pie', 'pencil', 'fire', 'sea', 'cupcake', 'plant']
   randomWord = random(words)
   assignWord = createElement('h2', randomWord)
   assignWord.position(0, 500)
@@ -143,7 +143,7 @@ function restartTimer(data){
 
 //Canvas functionality:
 function keyPressed() {
-  if (keyCode === 32) { //space bar to clear canvas 
+  if (keyCode === 32 && player.role == "drawer") { //space bar to clear canvas 
     clear();
     background(90);
     socket.emit("eraseScreen", true)  
