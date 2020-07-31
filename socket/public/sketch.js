@@ -59,7 +59,8 @@ function setup(){
   guessY = 60
 
   //initialize words
-  words = ['apple', 'banana', 'grapes', 'hat', 'sunset', 'daisy', 'camera', 'pie', 'pencil', 'fire', 'sea', 'cupcake', 'plant']
+  // words = ['apple', 'banana', 'grapes', 'hat', 'sunset', 'daisy', 'camera', 'pie', 'pencil', 'fire', 'sea', 'cupcake', 'plant']
+  words = ['banana', 'hat', 'sunset', 'camera', 'pie', 'plant']
   randomWord = random(words)
   assignWord = createElement('h2', randomWord)
   assignWord.position(0, 500)
@@ -68,6 +69,8 @@ function setup(){
   socket.emit('chosenWord', randomWord)
   socket.on('chosenWord', newWord)
 
+  endScreen = createElement('h2');
+  endScreen.id('endScreen');
 
   //player checkboxes
   playerChosen = false;
@@ -117,15 +120,13 @@ function draw() {
   if (words.length == 0){
     onTimesUp()
     assignWord.hide()
+    endScreen.show()
     if (yourScore == oppScore){
-      text("Tie!", width / 2, height / 2);
-      background(90);
+      endScreen.html('Tie!')
     } else if (yourScore > oppScore){
-      text("You Win!", width / 2, height / 2);
-      background(90);
+      endScreen.html('You Win!')
     } else {
-       text("You Lose!", width / 2, height / 2);
-       background(90);
+      endScreen.html('You Lose!')
     }
     noLoop()
   }

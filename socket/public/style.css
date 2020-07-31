@@ -141,7 +141,7 @@ button {
 #player {
     position: fixed;
     left: 100px;
-    top: 350px;
+    top: 55vh;
 }
 
 .grayText {
@@ -188,4 +188,11 @@ button {
 /* dont move this from the bottom it is being stupid*/
 #guessContainer p {
   margin-left: 20px;
+}
+
+#endScreen {
+    position: fixed;
+    top: 50%;
+    left: 40%;
+    text-align: center;
 }
