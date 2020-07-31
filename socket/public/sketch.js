@@ -121,8 +121,10 @@ function draw() {
       text("Tie!", width / 2, height / 2);
     } else if (yourScore > oppScore){
       text("You Win!", width / 2, height / 2);
+      background(90);
     } else {
        text("You Lose!", width / 2, height / 2);
+       background(90);
     }
     noLoop()
   }
