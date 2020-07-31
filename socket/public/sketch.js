@@ -119,6 +119,7 @@ function draw() {
     assignWord.hide()
     if (yourScore == oppScore){
       text("Tie!", width / 2, height / 2);
+      background(90);
     } else if (yourScore > oppScore){
       text("You Win!", width / 2, height / 2);
       background(90);
