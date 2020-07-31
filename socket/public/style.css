@@ -21,29 +21,27 @@ button {
   background-color: #ff8b6e;
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 14px;
   margin: 4px 2px;
   cursor: pointer;
-  width: 70px;
+  width: 60px;
   height: 20px;
   padding: 0px 0px 0px 0px;
   font-weight: bold;
 }
 
 /*Canvas CSS settings*/
-.p5Canvas {
-  
-}
+
 
 
 /* Sets the container's height and width*/
 .base-timer {
     position: fixed;
-    top: 600px;
+    top: 80vh;
     left: 100px;
     height: 100px;
     width: 100px;
@@ -127,7 +125,7 @@ button {
 
 #guessContainer input {
   margin-left: 20px;
-  positon: relative;
+  position: relative;
   display: inline-block;
   cursor: pointer;
 }
@@ -183,7 +181,7 @@ button {
 #rulesandcontrols {
   position: fixed;
   left: 100px;
-  top: 500px;
+  top: 35vh;
   width: 100px;
 }
 
