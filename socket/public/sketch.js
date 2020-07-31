@@ -60,7 +60,7 @@ function setup(){
 
   //initialize words
   // words = ['apple', 'banana', 'grapes', 'hat', 'sunset', 'daisy', 'camera', 'pie', 'pencil', 'fire', 'sea', 'cupcake', 'plant']
-  words = ['banana', 'hat', 'sunset', 'camera', 'pie', 'plant']
+  words = ['banana', 'sunset', 'camera','plant']
   randomWord = random(words)
   assignWord = createElement('h2', randomWord)
   assignWord.position(0, 500)
@@ -118,6 +118,7 @@ function draw() {
     newRound();
   }
   if (words.length == 0){
+    setRemainingPathColor(timeLeft)
     onTimesUp()
     assignWord.hide()
     endScreen.show()
